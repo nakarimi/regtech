@@ -2,14 +2,20 @@
 import express from "express";
 
 // import function from controller
-import { createMetadata } from "../controllers/metadata.js";
+import { createMetadata, showMetadata, getSingleMetadata } from "../controllers/metadata.js";
 import { getAllPendingAudits, updateAudit } from "../controllers/audits.js";
 
 // init express router
 const router = express.Router();
 
-// Get All Metadata
+// Get All Audits
 router.get('/get/all/pending/audits', getAllPendingAudits);
+
+// Get All Metadata
+router.get('/get/all/metadata', showMetadata);
+
+// Get Metadata
+router.get('/get/metadata/:id', getSingleMetadata);
 
 // Create New Metadata
 router.post('/metadata', createMetadata);

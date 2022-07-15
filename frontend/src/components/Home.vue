@@ -57,6 +57,7 @@ export default {
       try {
         await axios.put(`http://localhost:5000/approve/audit/${id}`).then((response) => {
           console.log(response.data);
+          this.audits = this.audits.filter(x => x.id != id);
         })
       } catch (err) {
         console.log(err);

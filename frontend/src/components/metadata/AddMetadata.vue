@@ -3,21 +3,21 @@
   <div class="field">
     <label class="label">Name</label>
     <div class="control">
-      <input class="input" type="text" placeholder="Name" v-model="name" />
+      <input class="input" type="text" placeholder="Name" v-model="metadata.name" />
     </div>
   </div>
 
   <div class="field">
     <label class="label">Owner</label>
     <div class="control">
-      <input class="input" type="text" placeholder="Owner" v-model="owner" />
+      <input class="input" type="text" placeholder="Owner" v-model="metadata.owner" />
     </div>
   </div>
 
   <div class="field">
     <label class="label">Manager</label>
     <div class="control">
-      <input class="input" type="text" placeholder="Manager" v-model="manager" />
+      <input class="input" type="text" placeholder="Manager" v-model="metadata.manager" />
     </div>
   </div>
 
@@ -35,9 +35,11 @@ export default {
   name: "AddMetaData",
   data() {
     return {
-      name: "",
-      owner: "",
-      manager: "",
+      metadata: {
+        name: "",
+        owner: "",
+        manager: "",
+      }
     };
   },
   methods: {
@@ -45,13 +47,13 @@ export default {
     async saveMetaData() {
       try {
         await axios.post("http://localhost:5000/metadata", {
-          name: this.name,
-          owner: this.owner,
-          manager: this.manager,
+          name: this.metadata.name,
+          owner: this.metadata.owner,
+          manager: this.metadata.manager,
         });
-        this.name = "";
-        this.owner = "";
-        this.manager = "";
+        this.metadata.name = "";
+        this.metadata.owner = "";
+        this.metadata.manager = "";
         this.$router.push("/");
       } catch (err) {
         console.log(err);
