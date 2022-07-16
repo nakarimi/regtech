@@ -27,6 +27,11 @@ const routes = [
         path: "edit/:id",
         component: () => import("./components/metadata/EditMetadata.vue"),
       },
+      {
+        name: "History Metadata",
+        path: "history/:id",
+        component: () => import("./components/metadata/MetaDataHistory.vue"),
+      },
     ],
   },
   {
@@ -50,6 +55,11 @@ const routes = [
         path: "edit/:id",
         component: () =>
           import("./components/technical_data/EditTechnicalData.vue"),
+      },
+      {
+        name: "History Technical Data",
+        path: "history/:id",
+        component: () => import("./components/technical_data/TechnicalDataHistory.vue"),
       },
     ],
   },

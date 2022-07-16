@@ -1,13 +1,13 @@
 <template>
-  <div id="app" class="container is-max-desktop bg-light">
-    <div class="row">
-      <navbar></navbar>
-    </div>
-    <hr />
-    <div class="row">
-      <router-view />
-    </div>
+<div id="app" class="container is-max-desktop bg-light">
+  <div class="row">
+    <navbar></navbar>
   </div>
+  <hr />
+  <div class="row">
+    <router-view />
+  </div>
+</div>
 </template>
 
 <script>

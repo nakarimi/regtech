@@ -3,7 +3,7 @@ import { insertData, updateData } from "../models/appModel.js";
 
 // Getting all audits that are not approved yet.
 export const getAllPendingAudits = (req, res) => {
-    db.query(`SELECT * FROM audits where status!='approved'`, (err, results) => {
+    db.query(`SELECT * FROM audits where status!='approved' order by created_at DESC`, (err, results) => {
         if (err) {
             console.log(err);
             res.send(err);
@@ -12,6 +12,22 @@ export const getAllPendingAudits = (req, res) => {
         }
     });
 };
+
+export const getAuditsHistory = (req, res) => {
+    const auditable_id = req.params.auditable_id;
+    const auditable_type = req.params.auditable_type;
+
+    db.query(`SELECT * FROM audits where auditable_id=? and auditable_type=? order by created_at DESC`,[auditable_id, auditable_type], (err, results) => {
+        if (err) {
+            console.log(err);
+            res.send(err);
+        } else {
+            res.json(results);
+        }
+    });
+};
+
+
 
 // Here the new values finded by the id of Audit and being applied to the main entity.
 export const updateAudit = (req, res) => {

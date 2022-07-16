@@ -4,13 +4,14 @@ import express from "express";
 // import function from controller
 import { createMetadata, showMetadata, getSingleMetadata } from "../controllers/metadata.js";
 import { createTechdata, showTechdata, getSingleTechdata } from "../controllers/technicaldata.js";
-import { getAllPendingAudits, updateAudit } from "../controllers/audits.js";
+import { getAllPendingAudits, updateAudit, getAuditsHistory } from "../controllers/audits.js";
 
 // init express router
 const router = express.Router();
 
 // Get All Audits
 router.get('/get/all/pending/audits', getAllPendingAudits);
+router.get('/get/audits/history/:auditable_type/:auditable_id', getAuditsHistory);
 
 // Get All Metadata
 router.get('/get/all/metadata', showMetadata);

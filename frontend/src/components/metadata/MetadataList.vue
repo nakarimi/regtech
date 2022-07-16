@@ -8,7 +8,7 @@
         <th>Owner</th>
         <th>Manager</th>
         <th>Created At</th>
-        <th></th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
@@ -19,7 +19,10 @@
         <td>{{ item.owner }}</td>
         <td>{{ item.manager }}</td>
         <td>{{ item.created_at }}</td>
-        <td><button class="btn btn-primary" @click="$router.push(`/metadata/edit/${item.id}`)" type="button">Edit</button></td>
+        <td>
+          <button class="btn btn-primary mx-2" @click="$router.push(`/metadata/edit/${item.id}`)" type="button">Edit</button>
+        <button class="btn btn-warning mx-2" @click="$router.push(`/metadata/history/${item.id}`)" type="button">View History</button>
+        </td>
       </tr>
     </tbody>
   </table>

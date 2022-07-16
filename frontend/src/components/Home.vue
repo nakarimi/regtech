@@ -18,24 +18,58 @@
         <td>{{ item.auditable_type }}</td>
         <td>{{ item.event }}</td>
         <td>{{ item.status }}</td>
-        <td>{{ item.created_at }}</td>
-        <td><button class="btn btn-primary" @click="approveAudit(item.id)" type="button">Approve</button></td>
+        <td>{{ formatDate(item.created_at) }}</td>
+        <td>
+          <!-- <button class="btn btn-primary" @click="approveAudit(item.id)" type="button">Approve</button> -->
+          <!-- Button trigger modal -->
+          <button @click="history_item=item" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">History</button>
+
+        </td>
       </tr>
     </tbody>
   </table>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" v-if="history_item">
+          <meta_data_distory :item="history_item" :key="history_item.auditable_id" v-if="history_item.auditable_type == 'metadata'" />
+          <technical_data_distory :item="history_item" :key="history_item.auditable_id" v-if="history_item.auditable_type != 'metadata'" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" @click="approveAudit(history_item.id)">Approve</button>
+          <button type="button" class="btn btn-danger">Reject</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 </template>
 
 <script>
 // import axios
 import axios from "axios";
+import moment from "moment";
+import MetaDataHistory from "./metadata/MetaDataHistory.vue";
+import TechnicalDataHistory from "./technical_data/TechnicalDataHistory.vue";
 
 export default {
   name: "AddMetaData",
   data() {
     return {
-      audits: []
+      audits: [],
+      history_item: null,
     };
+  },
+  components: {
+    meta_data_distory: MetaDataHistory,
+    technical_data_distory: TechnicalDataHistory
   },
   created() {
     this.getAudits();
@@ -54,17 +88,30 @@ export default {
     },
 
     // Approve the audits to affect the main entity.
-    async approveAudit(id){
+    async approveAudit(id) {
       try {
         await axios.put(`${process.env.VUE_APP_API_URL}/approve/audit/${id}`).then((response) => {
-          console.log(response.data);
+          console.log(response);
           this.audits = this.audits.filter(x => x.id != id);
+          document.querySelector('#exampleModal').modal('hide');
         })
       } catch (err) {
         console.log(err);
       }
     },
   },
+  computed: {
+    formatDate() {
+      return (value) => {
+        if (value) {
+          return moment(String(value)).format("MM/DD/YYYY hh:mm");
+        } else {
+          return "-"
+        }
+      };
+    },
+  },
+
 };
 </script>
 
