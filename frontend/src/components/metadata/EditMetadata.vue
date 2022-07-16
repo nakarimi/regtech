@@ -69,7 +69,7 @@ export default {
     async getMetadata() {
       try {
         await axios
-          .get(`http://localhost:5000/get/metadata/${this.$route.params.id}`)
+          .get(`${process.env.VUE_APP_API_URL}/get/metadata/${this.$route.params.id}`)
           .then((response) => {
             this.metadata.id = response.data[0].id;
             this.metadata.name = response.data[0].name;
@@ -86,7 +86,7 @@ export default {
     // update MetaData
     async updateMetaData() {
       try {
-        await axios.post("http://localhost:5000/metadata", this.metadata);
+        await axios.post(`${process.env.VUE_APP_API_URL}/metadata`, this.metadata);
         this.name = "";
         this.owner = "";
         this.manager = "";

@@ -39,12 +39,13 @@ export default {
   },
   created() {
     this.getAudits();
+    console.log(process.env.VUE_APP_API_URL);
   },
   methods: {
     // Create New MetaData
     async getAudits() {
       try {
-        await axios.get("http://localhost:5000/get/all/pending/audits").then((response) => {
+        await axios.get(`${process.env.VUE_APP_API_URL}/get/all/pending/audits`).then((response) => {
           this.audits = response.data;
         })
       } catch (err) {
@@ -55,7 +56,7 @@ export default {
     // Approve the audits to affect the main entity.
     async approveAudit(id){
       try {
-        await axios.put(`http://localhost:5000/approve/audit/${id}`).then((response) => {
+        await axios.put(`${process.env.VUE_APP_API_URL}/approve/audit/${id}`).then((response) => {
           console.log(response.data);
           this.audits = this.audits.filter(x => x.id != id);
         })

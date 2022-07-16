@@ -44,7 +44,7 @@ export default {
     // Create New MetaData
     async getMedtadata() {
       try {
-        await axios.get("http://localhost:5000/get/all/metadata").then((response) => {
+        await axios.get(`${process.env.VUE_APP_API_URL}/get/all/metadata`).then((response) => {
           this.metadata = response.data;
         })
       } catch (err) {
@@ -55,7 +55,7 @@ export default {
     // Approve the metadata to affect the main entity.
     async editMetadata(id){
       try {
-        await axios.put(`http://localhost:5000/edit/metadata/${id}`).then((response) => {
+        await axios.put(`${process.env.VUE_APP_API_URL}/edit/metadata/${id}`).then((response) => {
           console.log(response.data);
           this.metadata = this.metadata.filter(x => x.id != id);
         })

@@ -46,7 +46,7 @@ export default {
     // Create New MetaData
     async saveMetaData() {
       try {
-        await axios.post("http://localhost:5000/metadata", {
+        await axios.post(`${process.env.VUE_APP_API_URL}/metadata`, {
           name: this.metadata.name,
           owner: this.metadata.owner,
           manager: this.metadata.manager,
