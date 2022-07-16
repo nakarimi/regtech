@@ -1,6 +1,7 @@
 import db from "../config/database.js";
-import { insertData } from "../models/appModel.js";
+import { insertData, updateData } from "../models/appModel.js";
 
+// Getting all audits that are not approved yet.
 export const getAllPendingAudits = (req, res) => {
     db.query(`SELECT * FROM audits where status!='approved'`, (err, results) => {
         if (err) {
@@ -12,33 +13,52 @@ export const getAllPendingAudits = (req, res) => {
     });
 };
 
+// Here the new values finded by the id of Audit and being applied to the main entity.
 export const updateAudit = (req, res) => {
     const id = req.params.id;
     db.query(`SELECT * FROM audits where id=${id}`, (err, results) => {
         if (err) {
             console.log(err);
         } else {
-            //   First create the audits, so when it is approved the main record being created.
-            insertData(
-                JSON.parse(results[0].new_values),
-                results[0].auditable_type,
-                (err, results2) => {
-                    if (err) {
-                        res.send(err);
-                    } else {
-                        processAudit(results[0].id);
-                        res.json(results2);
+            //   First create or update the audits, so when it is approved the main record being created.
+            if (results[0].event == "update") {
+                updateData(
+                    JSON.parse(results[0].new_values),
+                    results[0].auditable_id,
+                    results[0].auditable_type,
+                    (err, results2) => {
+                        if (err) {
+                            res.send(err);
+                        } else {
+                            processAudit(results[0].id);
+                            res.json(results2);
+                        }
                     }
-                }
-            );
+                );
+            } else {
+                insertData(
+                    JSON.parse(results[0].new_values),
+                    results[0].auditable_type,
+                    (err, results2) => {
+                        if (err) {
+                            res.send(err);
+                        } else {
+                            processAudit(results[0].id);
+                            res.json(results2);
+                        }
+                    }
+                );
+            }
         }
     });
 };
 
+// Update the audits when approved, so for the next time it would be ignored by flag approved.
 export const processAudit = (id) => {
+    var today  = new Date();
     db.query(
-        "UPDATE audits SET status = ? WHERE id = ?",
-        ["approved", id],
+        `UPDATE audits SET status = ?, approval_date = ? WHERE id = ?`,
+        ["approved", today, id],
         (err, results) => {
             if (err) {
                 console.log(err);

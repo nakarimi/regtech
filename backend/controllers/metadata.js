@@ -34,26 +34,30 @@ export const createMetadata = (req, res) => {
   }
 
   // Mapping the audit data to be stored as pending that needs approval.
-  let AuditData = {
-    event: old_values ? "update" : "create",
-    auditable_type: "metadata",
-    auditable_id: auditable_id,
-    old_values: JSON.stringify(old_values),
-    new_values: JSON.stringify(new_values),
-    ip_address: req.ip,
-    user_agent: req.headers["user-agent"],
-  };
-
-  // First create the audits, so when it is approved the main record being created.
-  // Before Create New Metadata, the audits being created that needs approval to affect the system.
-  insertData(AuditData, "audits", (err, results) => {
-    if (err) {
-      console.log(err);
-      res.send(err);
-    } else {
-      res.json(results);
-    }
-  });
+  if(Object.keys(new_values).length === 0){
+    res.send("Fields not changed.");
+  }else{
+      let AuditData = {
+        event: auditable_id ? "update" : "create",
+        auditable_type: "metadata",
+        auditable_id: auditable_id,
+        old_values: JSON.stringify(old_values),
+        new_values: JSON.stringify(new_values),
+        ip_address: req.ip,
+        user_agent: req.headers["user-agent"],
+      };
+    
+      // First create the audits, so when it is approved the main record being created.
+      // Before Create New Metadata, the audits being created that needs approval to affect the system.
+      insertData(AuditData, "audits", (err, results) => {
+        if (err) {
+          console.log(err);
+          res.send(err);
+        } else {
+          res.json(results);
+        }
+      });
+  }
 };
 
 // Getting all Metadata.

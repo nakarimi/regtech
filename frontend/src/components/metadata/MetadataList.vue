@@ -19,7 +19,7 @@
         <td>{{ item.owner }}</td>
         <td>{{ item.manager }}</td>
         <td>{{ item.created_at }}</td>
-        <td><button class="btn btn-primary" @click="editMetadata(item.id)" type="button">Approve</button></td>
+        <td><button class="btn btn-primary" @click="$router.push(`/metadata/edit/${item.id}`)" type="button">Edit</button></td>
       </tr>
     </tbody>
   </table>
