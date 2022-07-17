@@ -18,7 +18,7 @@
         <td>{{ item.auditable_type }}</td>
         <td>{{ item.event }}</td>
         <td>{{ item.status }}</td>
-        <td>{{ formatDate(item.created_at) }}</td>
+        <td>{{ dateFormat(item.created_at) }}</td>
         <td>
           <!-- <button class="btn btn-primary" @click="approveAudit(item.id)" type="button">Approve</button> -->
           <!-- Button trigger modal -->
@@ -55,9 +55,11 @@
 <script>
 // import axios
 import axios from "axios";
-import moment from "moment";
 import MetaDataHistory from "./metadata/MetaDataHistory.vue";
 import TechnicalDataHistory from "./technical_data/TechnicalDataHistory.vue";
+import {
+  formatDate
+} from "@/global.js";
 
 export default {
   name: "AddMetaData",
@@ -90,28 +92,18 @@ export default {
     // Approve the audits to affect the main entity.
     async approveAudit(id) {
       try {
-        await axios.put(`${process.env.VUE_APP_API_URL}/approve/audit/${id}`).then((response) => {
-          console.log(response);
+        await axios.put(`${process.env.VUE_APP_API_URL}/approve/audit/${id}`).then(() => {
           this.audits = this.audits.filter(x => x.id != id);
-          document.querySelector('#exampleModal').modal('hide');
+          
         })
       } catch (err) {
         console.log(err);
       }
     },
-  },
-  computed: {
-    formatDate() {
-      return (value) => {
-        if (value) {
-          return moment(String(value)).format("MM/DD/YYYY hh:mm");
-        } else {
-          return "-"
-        }
-      };
+    dateFormat(date) {
+      return formatDate(date);
     },
   },
-
 };
 </script>
 

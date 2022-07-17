@@ -18,10 +18,10 @@
         <td>{{ item.name }}</td>
         <td>{{ item.owner }}</td>
         <td>{{ item.manager }}</td>
-        <td>{{ item.created_at }}</td>
+        <td>{{ dateFormat(item.created_at) }}</td>
         <td>
           <button class="btn btn-primary mx-2" @click="$router.push(`/metadata/edit/${item.id}`)" type="button">Edit</button>
-        <button class="btn btn-warning mx-2" @click="$router.push(`/metadata/history/${item.id}`)" type="button">View History</button>
+          <button class="btn btn-warning mx-2" @click="$router.push(`/metadata/history/${item.id}`)" type="button">View History</button>
         </td>
       </tr>
     </tbody>
@@ -32,9 +32,12 @@
 <script>
 // import axios
 import axios from "axios";
+import {
+  formatDate
+} from '@/global.js'
 
 export default {
-  name: "AddMetaData",
+  name: "ListMetaData",
   data() {
     return {
       metadata: []
@@ -44,6 +47,9 @@ export default {
     this.getMedtadata();
   },
   methods: {
+    dateFormat(date) {
+      return formatDate(date);
+    },
     // Create New MetaData
     async getMedtadata() {
       try {
@@ -56,7 +62,7 @@ export default {
     },
 
     // Approve the metadata to affect the main entity.
-    async editMetadata(id){
+    async editMetadata(id) {
       try {
         await axios.put(`${process.env.VUE_APP_API_URL}/edit/metadata/${id}`).then((response) => {
           console.log(response.data);

@@ -14,14 +14,16 @@
     </div>
   </div>
 
-  <div class="field">
-    <label class="label">Application</label>
-    <div class="control">
-      <input class="input" type="text" placeholder="Application" v-model="techdata.app_id" />
-    </div>
+  <div class="form-group">
+    <label for="my-select">Application</label>
+    <select id="my-select" class="form-control" v-model="techdata.app_id">
+      <option selected="selected" value="">Select Application</option>
+      <option v-for="(item, index) in metadata" :key="index" :value="item.id">{{ item.name  }}</option>
+    </select>
   </div>
 
   <div class="control">
+    <br>
     <button class="button is-success" @click="updateTechnicalData">UPDATE</button>
   </div>
 </div>
@@ -32,7 +34,7 @@
 import axios from "axios";
 
 export default {
-  name: "AddTechnicalData",
+  name: "EditTechnicalData",
   data() {
     return {
       techdata: {
@@ -44,6 +46,7 @@ export default {
         old_permissions: "",
         old_app_id: "",
       },
+      metadata: []
     };
   },
   created() {
@@ -63,6 +66,8 @@ export default {
             this.techdata.old_role = response.data[0].role;
             this.techdata.old_permissions = response.data[0].permissions;
             this.techdata.old_app_id = response.data[0].app_id;
+
+            this.getMedtadata();
           });
       } catch (err) {
         console.log(err);
@@ -76,6 +81,16 @@ export default {
         this.permissions = "";
         this.app_id = "";
         this.$router.push("/");
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    getMedtadata() {
+      try {
+        axios.get(`${process.env.VUE_APP_API_URL}/get/all/metadata`).then((response) => {
+          console.log(response.data);
+          this.metadata = response.data;
+        })
       } catch (err) {
         console.log(err);
       }

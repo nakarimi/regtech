@@ -23,8 +23,9 @@
           <history :prev="JSON.parse(h.old_values).manager" :current="JSON.parse(h.new_values).manager" />
         </td>
         <td>{{ h.status }}</td>
-        <td>{{ formatDate(h.created_at) }}</td>
-        <td>{{ formatDate(h.approval_date) }}</td>
+        <td>{{ dateFormat(h.created_at) }}</td>
+        <td>{{ dateFormat(h.approval_date) }}</td>
+
       </tr>
     </tbody>
   </table>
@@ -32,13 +33,18 @@
 </template>
 
 <script>
-import History from "../shared/History.vue";
+import History from "@/components/shared/History.vue";
+import {
+  formatDate
+} from '@/global.js'
 import axios from "axios";
-import moment from "moment";
 
 export default {
   name: "MetaDataHistory",
-  props: {id: Number, item: Object},
+  props: {
+    id: Number,
+    item: Object
+  },
   components: {
     history: History,
   },
@@ -53,9 +59,9 @@ export default {
   methods: {
     // get Audits History
     async getAuditsHistory() {
-      if(this.item){
+      if (this.item) {
         this.histories.push(this.item);
-      }else{
+      } else {
         try {
           await axios
             .get(
@@ -69,16 +75,8 @@ export default {
         }
       }
     },
-  },
-  computed: {
-    formatDate() {
-      return (value) => {
-        if (value) {
-          return moment(String(value)).format("MM/DD/YYYY hh:mm");
-        } else {
-          return "-"
-        }
-      };
+    dateFormat(date) {
+      return formatDate(date);
     },
   },
 };

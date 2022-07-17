@@ -47,7 +47,7 @@
 import axios from "axios";
 
 export default {
-  name: "AddMetaData",
+  name: "EditMetaData",
   data() {
     return {
       metadata: {

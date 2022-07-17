@@ -13,6 +13,8 @@ export const getAllPendingAudits = (req, res) => {
     });
 };
 
+
+// Fetching the audits history based on auditable id and type.
 export const getAuditsHistory = (req, res) => {
     const auditable_id = req.params.auditable_id;
     const auditable_type = req.params.auditable_type;
@@ -52,6 +54,7 @@ export const updateAudit = (req, res) => {
                     }
                 );
             } else {
+
                 insertData(
                     JSON.parse(results[0].new_values),
                     results[0].auditable_type,
@@ -59,7 +62,8 @@ export const updateAudit = (req, res) => {
                         if (err) {
                             res.send(err);
                         } else {
-                            processAudit(results[0].id);
+
+                            processAudit(results[0].id, results2.insertId);
                             res.json(results2);
                         }
                     }
@@ -70,11 +74,11 @@ export const updateAudit = (req, res) => {
 };
 
 // Update the audits when approved, so for the next time it would be ignored by flag approved.
-export const processAudit = (id) => {
+export const processAudit = (id, auditable_id) => {
     var today  = new Date();
     db.query(
-        `UPDATE audits SET status = ?, approval_date = ? WHERE id = ?`,
-        ["approved", today, id],
+        `UPDATE audits SET status = ?, approval_date = ?, auditable_id = ? WHERE id = ?`,
+        ["approved", today, auditable_id, id],
         (err, results) => {
             if (err) {
                 console.log(err);

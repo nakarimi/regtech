@@ -23,8 +23,8 @@
           <history :prev="JSON.parse(h.old_values).permissions" :current="JSON.parse(h.new_values).permissions" />
         </td>
         <td>{{ h.status }}</td>
-        <td>{{ formatDate(h.created_at) }}</td>
-        <td>{{ formatDate(h.approval_date) }}</td>
+        <td>{{ dateFormat(h.created_at) }}</td>
+        <td>{{ dateFormat(h.approval_date) }}</td>
       </tr>
     </tbody>
   </table>
@@ -32,9 +32,9 @@
 </template>
 
 <script>
-import History from "../shared/History.vue";
+import {formatDate} from '@/global.js'
+import History from "@/components/shared/History.vue";
 import axios from "axios";
-import moment from "moment";
 
 export default {
   name: "TechnicalDataHistory",
@@ -52,9 +52,14 @@ export default {
   },
   created() {
     this.getAuditsHistory();
+    
   },
   methods: {
-    // get getAuditsHistory
+    dateFormat(date) {
+      return formatDate(date);
+    },
+
+    // Get Audits History
     async getAuditsHistory() {
       if (this.item) {
         this.histories.push(this.item);
@@ -71,17 +76,6 @@ export default {
           console.log(err);
         }
       }
-    },
-  },
-  computed: {
-    formatDate() {
-      return (value) => {
-        if (value) {
-          return moment(String(value)).format("MM/DD/YYYY hh:mm");
-        } else {
-          return "-"
-        }
-      };
     },
   },
 };
