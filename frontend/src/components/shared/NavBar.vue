@@ -22,13 +22,22 @@ export default {
   name: "NavBar",
   data() {
     return {
-      menuItems: [{
+      menuItems: [
+        {
           name: "Meta Data",
           url: "/metadata/list"
         },
         {
+          name: "Add Meta Data",
+          url: "/metadata/create"
+        },
+        {
           name: "Technical Data",
           url: "/techdata/list"
+        },
+        {
+          name: "Add Technical Data",
+          url: "/techdata/create"
         }
       ],
     };

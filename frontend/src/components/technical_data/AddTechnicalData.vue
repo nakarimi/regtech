@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="w-25 m-auto">
   <div class="field">
     <label class="label">Role</label>
     <div class="control">
@@ -24,7 +24,7 @@
 
   <div class="control">
     <br>
-    <button class="button is-success" @click="saveTechnicalData">SAVE</button>
+    <button class="button is-success mb-3" @click="saveTechnicalData">SAVE</button>
   </div>
 </div>
 </template>

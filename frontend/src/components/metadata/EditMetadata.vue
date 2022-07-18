@@ -1,45 +1,30 @@
 <template>
-  <div>
-    <div class="field">
-      <label class="label">Name</label>
-      <div class="control">
-        <input
-          class="input"
-          type="text"
-          placeholder="Name"
-          v-model="metadata.name"
-        />
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Owner</label>
-      <div class="control">
-        <input
-          class="input"
-          type="text"
-          placeholder="Owner"
-          v-model="metadata.owner"
-        />
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Manager</label>
-      <div class="control">
-        <input
-          class="input"
-          type="text"
-          placeholder="Manager"
-          v-model="metadata.manager"
-        />
-      </div>
-    </div>
-
+<div class="w-25 m-auto">
+  <div class="field">
+    <label class="label">Name</label>
     <div class="control">
-      <button class="button is-success" @click="updateMetaData">UPDATE</button>
+      <input class="input" type="text" placeholder="Name" v-model="metadata.name" />
     </div>
   </div>
+
+  <div class="field">
+    <label class="label">Owner</label>
+    <div class="control">
+      <input class="input" type="text" placeholder="Owner" v-model="metadata.owner" />
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Manager</label>
+    <div class="control">
+      <input class="input" type="text" placeholder="Manager" v-model="metadata.manager" />
+    </div>
+  </div>
+
+  <div class="control">
+    <button class="button is-success mb-3" @click="updateMetaData">UPDATE</button>
+  </div>
+</div>
 </template>
 
 <script>
