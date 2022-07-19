@@ -52,11 +52,7 @@ export default {
     // Create New TechnicalData
     async saveTechnicalData() {
       try {
-        await axios.post(`${process.env.VUE_APP_API_URL}/techdata`, {
-          role: this.techdata.role,
-          permissions: this.techdata.permissions,
-          app_id: this.techdata.app_id,
-        });
+        await axios.post(`${process.env.VUE_APP_API_URL}/techdata`, this.techdata);
         this.techdata.role = "";
         this.techdata.permissions = "";
         this.techdata.app_id = "";
@@ -67,8 +63,11 @@ export default {
     },
     getMedtadata() {
       try {
-        axios.get(`${process.env.VUE_APP_API_URL}/get/all/metadata`).then((response) => {
-          console.log(response.data);
+        axios.get(`${process.env.VUE_APP_API_URL}/get/all/metadata`, {
+          params: {
+            fields: "id, name"
+          }
+        }).then((response) => {
           this.metadata = response.data;
         })
       } catch (err) {

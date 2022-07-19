@@ -1,6 +1,9 @@
 <template lang="">
 <div>
-  <table class="table table-light">
+    <div v-if="!Object.keys(metadata).length" class="alert alert-warning" role="alert">
+    Data not found! Add new Metadata.
+  </div>
+  <table v-if="Object.keys(metadata).length" class="table table-light">
     <thead class="thead-light">
       <tr>
         <th>#</th>
@@ -50,7 +53,7 @@ export default {
     dateFormat(date) {
       return formatDate(date);
     },
-    // Create New MetaData
+    // Get All MetaData
     async getMedtadata() {
       try {
         await axios.get(`${process.env.VUE_APP_API_URL}/get/all/metadata`).then((response) => {
@@ -64,8 +67,9 @@ export default {
     // Approve the metadata to affect the main entity.
     async editMetadata(id) {
       try {
-        await axios.put(`${process.env.VUE_APP_API_URL}/edit/metadata/${id}`).then((response) => {
-          console.log(response.data);
+        await axios.put(`${process.env.VUE_APP_API_URL}/edit/metadata/${id}`).then(() => {
+
+          // Update table based on the api result.
           this.metadata = this.metadata.filter(x => x.id != id);
         })
       } catch (err) {

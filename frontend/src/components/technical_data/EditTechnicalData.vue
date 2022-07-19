@@ -87,8 +87,11 @@ export default {
     },
     getMedtadata() {
       try {
-        axios.get(`${process.env.VUE_APP_API_URL}/get/all/metadata`).then((response) => {
-          console.log(response.data);
+        axios.get(`${process.env.VUE_APP_API_URL}/get/all/metadata`, {
+          params: {
+            fields: "id, name"
+          }
+        }).then((response) => {
           this.metadata = response.data;
         })
       } catch (err) {

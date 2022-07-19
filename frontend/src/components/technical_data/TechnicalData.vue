@@ -1,6 +1,9 @@
 <template lang="">
 <div>
-  <table class="table table-light">
+    <div v-if="!Object.keys(techdata).length" class="alert alert-warning" role="alert">
+    Data not found! Add new Technical Data.
+  </div>
+  <table v-if="Object.keys(techdata).length" class="table table-light">
     <thead class="thead-light">
       <tr>
         <th>#</th>
@@ -16,7 +19,7 @@
         <td>{{ item.id }}</td>
         <td>{{ item.role }}</td>
         <td>{{ item.permissions }}</td>
-        <td>{{ item.app_id }}</td>
+        <td>{{ item.name }}</td>
         <td>{{ dateFormat(item.created_at) }}</td>
         <td>
           <button class="btn btn-primary" @click="$router.push(`/techdata/edit/${item.id}`)" type="button">
@@ -47,14 +50,14 @@ export default {
     };
   },
   created() {
-    this.getMedtadata();
+    this.getTechData();
   },
   methods: {
     dateFormat(date) {
       return formatDate(date);
     },
     // Create New MetaData
-    async getMedtadata() {
+    async getTechData() {
       try {
         await axios
           .get(`${process.env.VUE_APP_API_URL}/get/all/techdata`)

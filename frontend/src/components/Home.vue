@@ -1,6 +1,9 @@
 <template lang="">
 <div>
-  <table class="table table-light">
+  <div v-if="!Object.keys(audits).length" class="alert alert-warning" role="alert">
+    Data not found! Add new Metadata and Technical Data.
+  </div>
+  <table v-if="Object.keys(audits).length" class="table table-light">
     <thead class="thead-light">
       <tr>
         <th>#</th>
@@ -102,6 +105,19 @@ export default {
     },
     dateFormat(date) {
       return formatDate(date);
+    },
+    async getMedtadata() {
+      try {
+        await axios.get(`${process.env.VUE_APP_API_URL}/get/all/metadata`, {
+          params: {
+            fields: "id, name, owner"
+          }
+        }).then((response) => {
+          this.metadata = response.data;
+        })
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 };

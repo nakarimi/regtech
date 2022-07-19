@@ -22,7 +22,7 @@
         <td>
           <history :prev="JSON.parse(h.old_values).manager" :current="JSON.parse(h.new_values).manager" />
         </td>
-        <td>{{ h.status }}</td>
+        <td class="text-capitalize">{{ h.status }}</td>
         <td>{{ dateFormat(h.created_at) }}</td>
         <td>{{ dateFormat(h.approval_date) }}</td>
 
