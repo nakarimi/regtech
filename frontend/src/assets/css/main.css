@@ -1,0 +1,15 @@
+.vue-diff-viewer .vue-diff-row .lineNum{
+  display: none;
+}
+.vue-diff-viewer .vue-diff-row code:before{
+  display: none;
+}
+.vue-diff-viewer .vue-diff-row pre{
+  padding-left: 0px;
+}
+.vue-diff-viewer .vue-diff-row .hljs{
+  white-space: nowrap;
+}
+.vue-diff-viewer{
+  background: #f8f9fa;
+}

@@ -1,9 +1,9 @@
 // import connection
 import db from "../config/database.js";
 
-// Insert Metadata to Database
-export const insertMetadata = (data, result) => {
-    db.query("INSERT INTO metadata SET ?", [data], (err, results) => {             
+// Insert Techdata to Database
+export const insertTechdata = (data, result) => {
+    db.query("INSERT INTO technical_data SET ?", [data], (err, results) => {             
         if(err) {
             console.log(err);
             result(err, null);
@@ -13,9 +13,9 @@ export const insertMetadata = (data, result) => {
     });   
 }
 
-// Getting all Metadata.
-export const allMetadata = (result) => {
-    db.query(`SELECT * FROM metadata`, (err, results) => {
+// Getting all Techdata.
+export const allTechdata = (result) => {
+    db.query(`SELECT * FROM technical_data`, (err, results) => {
         if(err) {
             console.log(err);
             result(err, null);
@@ -25,13 +25,15 @@ export const allMetadata = (result) => {
     });
 };
 
-// Getting single Metadata.
-export const getMetadata = (id, result) => {
-    db.query(`SELECT * FROM metadata where id=${id}`, (err, results) => {
+// Getting single Techdata.
+export const getTechdata = (id, result) => {
+    db.query(`SELECT * FROM technical_data where id=${id}`, (err, results) => {
         if(err) {
             console.log(err);
             result(err, null);
         } else {
+            console.log(results);
+
             result(null, results);
         }
     });

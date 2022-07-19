@@ -1,9 +1,9 @@
-// Import function from Metadata Model
-import { getMetadata, allMetadata } from "../models/metadataModel.js";
+// Import function from Techdata Model
+import { getTechdata, allTechdata } from "../models/techDataModel.js";
 import { insertData } from "../models/appModel.js";
 
-// Create New Metadata
-export const createMetadata = (req, res) => {
+// Create New Techdata
+export const createTechdata = (req, res) => {
   // Mapping the old and new values to store on the audits.
   const data = req.body;
   //   console.log(req.socket.remoteAddress);
@@ -11,24 +11,24 @@ export const createMetadata = (req, res) => {
   var new_values = {};
   //   Check if the old and new values are not same and map the data.
   if (data.id) {
-    if (data.old_name != data.name) {
-      new_values.name = data.name;
-      old_values.name = data.old_name;
+    if (data.old_role != data.role) {
+      new_values.role = data.role;
+      old_values.role = data.old_role;
     }
-    if (data.old_owner != data.owner) {
-      new_values.owner = data.owner;
-      old_values.owner = data.old_owner;
+    if (data.old_permissions != data.permissions) {
+      new_values.permissions = data.permissions;
+      old_values.permissions = data.old_permissions;
     }
-    if (data.old_manager != data.manager) {
-      new_values.manager = data.manager;
-      old_values.manager = data.old_manager;
+    if (data.old_app_id != data.app_id) {
+      new_values.app_id = data.app_id;
+      old_values.app_id = data.old_app_id;
     }
     var auditable_id = data.id;
   } else {
     new_values = {
-      name: data.name,
-      owner: data.owner,
-      manager: data.manager,
+      role: data.role,
+      permissions: data.permissions,
+      app_id: data.app_id,
     };
     var auditable_id = null;
   }
@@ -39,16 +39,16 @@ export const createMetadata = (req, res) => {
   }else{
       let AuditData = {
         event: auditable_id ? "update" : "create",
-        auditable_type: "metadata",
+        auditable_type: "technical_data",
         auditable_id: auditable_id,
         old_values: JSON.stringify(old_values),
         new_values: JSON.stringify(new_values),
         ip_address: req.ip,
         user_agent: req.headers["user-agent"],
       };
-    
+      
       // First create the audits, so when it is approved the main record being created.
-      // Before Create New Metadata, the audits being created that needs approval to affect the system.
+      // Before Create New Techdata, the audits being created that needs approval to affect the system.
       insertData(AuditData, "audits", (err, results) => {
         if (err) {
           console.log(err);
@@ -60,9 +60,9 @@ export const createMetadata = (req, res) => {
   }
 };
 
-// Getting all Metadata.
-export const showMetadata = (req, res) => {
-  allMetadata((err, results) => {
+// Getting all Techdata.
+export const showTechdata = (req, res) => {
+  allTechdata((err, results) => {
     if (err) {
       res.send(err);
     } else {
@@ -71,10 +71,11 @@ export const showMetadata = (req, res) => {
   });
 };
 
-// Getting the Metadata.
-export const getSingleMetadata = (req, res) => {
+// Getting the Techdata.
+export const getSingleTechdata = (req, res) => {
   const id = req.params.id;
-  getMetadata(id, (err, results) => {
+  console.log(id);
+  getTechdata(id, (err, results) => {
     if (err) {
       res.send(err);
     } else {
