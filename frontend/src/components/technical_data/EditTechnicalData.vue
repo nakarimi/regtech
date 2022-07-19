@@ -70,19 +70,29 @@ export default {
             this.getMedtadata();
           });
       } catch (err) {
+        this.$swal('Operation failed, please try again!');
         console.log(err);
+
       }
     },
     // update TechnicalData
     async updateTechnicalData() {
-      try {
-        await axios.post(`${process.env.VUE_APP_API_URL}/techdata`, this.techdata);
-        this.role = "";
-        this.permissions = "";
-        this.app_id = "";
-        this.$router.push("/");
-      } catch (err) {
-        console.log(err);
+      if (this.techdata.role == '' || this.techdata.permissions == '', this.techdata.app_id == '') {
+        // norify user to fill all fields.
+        this.$swal('All fields are required!');
+      } else {
+
+        try {
+          await axios.post(`${process.env.VUE_APP_API_URL}/techdata`, this.techdata);
+          this.role = "";
+          this.permissions = "";
+          this.app_id = "";
+          this.$router.push("/");
+        } catch (err) {
+          this.$swal('Operation failed, please try again!');
+          console.log(err);
+
+        }
       }
     },
     getMedtadata() {
@@ -96,6 +106,7 @@ export default {
         })
       } catch (err) {
         console.log(err);
+
       }
     },
   },

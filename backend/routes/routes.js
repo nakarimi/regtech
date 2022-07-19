@@ -4,7 +4,7 @@ import express from "express";
 // import function from controller
 import { createMetadata, showMetadata, getSingleMetadata } from "../controllers/metadata.js";
 import { createTechdata, showTechdata, getSingleTechdata } from "../controllers/technicaldata.js";
-import { getAllPendingAudits, updateAudit, getAuditsHistory } from "../controllers/audits.js";
+import { getAllPendingAudits, updateAudit, getAuditsHistory, rejectAudit } from "../controllers/audits.js";
 
 // init express router
 const router = express.Router();
@@ -33,6 +33,9 @@ router.post('/techdata', createTechdata);
 
 // Aoorove pending audits.
 router.put('/approve/audit/:id', updateAudit);
+
+// reject pending audits.
+router.put('/reject/audit/:id', rejectAudit);
 
 // export default router
 export default router;

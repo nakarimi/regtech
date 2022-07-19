@@ -25,7 +25,7 @@
         </td>
         <td class="text-capitalize">{{ h.status }}</td>
         <td>{{ dateFormat(h.created_at) }}</td>
-        <td>{{ dateFormat(h.approval_date) }}</td>
+        <td>{{ dateFormat(h.review_date) }}</td>
       </tr>
     </tbody>
   </table>
@@ -82,6 +82,7 @@ export default {
             });
         } catch (err) {
           console.log(err);
+
         }
       }
     },
@@ -100,6 +101,7 @@ export default {
           });
       } catch (err) {
         console.log(err);
+
       }
     },
 

@@ -1,6 +1,6 @@
 <template lang="">
 <div>
-    <div v-if="!Object.keys(metadata).length" class="alert alert-warning" role="alert">
+  <div v-if="!Object.keys(metadata).length" class="alert alert-warning" role="alert">
     Data not found! Add new Metadata.
   </div>
   <table v-if="Object.keys(metadata).length" class="table table-light">
@@ -60,7 +60,9 @@ export default {
           this.metadata = response.data;
         })
       } catch (err) {
+        this.$swal('Operation failed, please try again!');
         console.log(err);
+
       }
     },
 
@@ -73,7 +75,9 @@ export default {
           this.metadata = this.metadata.filter(x => x.id != id);
         })
       } catch (err) {
+        this.$swal('Operation failed, please try again!');
         console.log(err);
+
       }
     },
   },

@@ -16,7 +16,6 @@
     </thead>
     <tbody>
       <tr v-for="item in audits" :key="item.id">
-
         <td>{{ item.id }}</td>
         <td>{{ item.auditable_type }}</td>
         <td>{{ item.event }}</td>
@@ -25,8 +24,9 @@
         <td>
           <!-- <button class="btn btn-primary" @click="approveAudit(item.id)" type="button">Approve</button> -->
           <!-- Button trigger modal -->
-          <button @click="history_item=item" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">History</button>
-
+          <button @click="history_item = item" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Review
+          </button>
         </td>
       </tr>
     </tbody>
@@ -44,14 +44,19 @@
           <technical_data_distory :item="history_item" :key="history_item.auditable_id" v-if="history_item.auditable_type != 'metadata'" />
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" @click="approveAudit(history_item.id)">Approve</button>
-          <button type="button" class="btn btn-danger">Reject</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="approveAudit(history_item.id)">
+            Approve
+          </button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="rejectAudit(history_item.id)">
+            Reject
+          </button>
         </div>
       </div>
     </div>
   </div>
-
 </div>
 </template>
 
@@ -74,7 +79,7 @@ export default {
   },
   components: {
     meta_data_distory: MetaDataHistory,
-    technical_data_distory: TechnicalDataHistory
+    technical_data_distory: TechnicalDataHistory,
   },
   created() {
     this.getAudits();
@@ -84,45 +89,71 @@ export default {
     // Create New MetaData
     async getAudits() {
       try {
-        await axios.get(`${process.env.VUE_APP_API_URL}/get/all/pending/audits`).then((response) => {
-          this.audits = response.data;
-        })
+        await axios
+          .get(`${process.env.VUE_APP_API_URL}/get/all/pending/audits`)
+          .then((response) => {
+            this.audits = response.data;
+          });
       } catch (err) {
+        this.$swal("Operation failed, please try again!");
         console.log(err);
       }
     },
 
     // Approve the audits to affect the main entity.
-    async approveAudit(id) {
-      try {
-        await axios.put(`${process.env.VUE_APP_API_URL}/approve/audit/${id}`).then(() => {
-          this.audits = this.audits.filter(x => x.id != id);
-          
-        })
-      } catch (err) {
-        console.log(err);
-      }
+    approveAudit(id) {
+      this.$swal({
+        title: "Are you sure to approve this audit?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, process it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          try {
+            axios
+              .put(`${process.env.VUE_APP_API_URL}/approve/audit/${id}`)
+              .then(() => {
+                this.audits = this.audits.filter((x) => x.id != id);
+              });
+          } catch (err) {
+            this.$swal("Operation failed, please try again!");
+            console.log(err);
+          }
+        }
+      });
+    },
+
+    // Reject the audits to affect the main entity.
+    rejectAudit(id) {
+      this.$swal({
+        title: "Are you sure to reject this audit?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, reject it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          try {
+            axios
+              .put(`${process.env.VUE_APP_API_URL}/reject/audit/${id}`)
+              .then(() => {
+                this.$swal("The requested changes rejected!");
+              });
+          } catch (err) {
+            this.$swal("Operation failed, please try again!");
+            console.log(err);
+          }
+        }
+      });
     },
     dateFormat(date) {
       return formatDate(date);
-    },
-    async getMedtadata() {
-      try {
-        await axios.get(`${process.env.VUE_APP_API_URL}/get/all/metadata`, {
-          params: {
-            fields: "id, name, owner"
-          }
-        }).then((response) => {
-          this.metadata = response.data;
-        })
-      } catch (err) {
-        console.log(err);
-      }
     },
   },
 };
 </script>
 
-<style lang="">
-  
-</style>
+<style lang=""></style>

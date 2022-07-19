@@ -1,6 +1,6 @@
 <template lang="">
 <div>
-    <div v-if="!Object.keys(techdata).length" class="alert alert-warning" role="alert">
+  <div v-if="!Object.keys(techdata).length" class="alert alert-warning" role="alert">
     Data not found! Add new Technical Data.
   </div>
   <table v-if="Object.keys(techdata).length" class="table table-light">
@@ -66,19 +66,7 @@ export default {
           });
       } catch (err) {
         console.log(err);
-      }
-    },
 
-    // Approve the techdata to affect the main entity.
-    async editMetadata(id) {
-      try {
-        await axios
-          .put(`${process.env.VUE_APP_API_URL}/edit/techdata/${id}`)
-          .then(() => {
-            this.techdata = this.techdata.filter((x) => x.id != id);
-          });
-      } catch (err) {
-        console.log(err);
       }
     },
   },

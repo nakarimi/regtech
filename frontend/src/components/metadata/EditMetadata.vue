@@ -66,18 +66,27 @@ export default {
           });
       } catch (err) {
         console.log(err);
+
       }
     },
     // update MetaData
     async updateMetaData() {
-      try {
-        await axios.post(`${process.env.VUE_APP_API_URL}/metadata`, this.metadata);
-        this.name = "";
-        this.owner = "";
-        this.manager = "";
-        this.$router.push("/");
-      } catch (err) {
-        console.log(err);
+      if (this.metadata.name == '' || this.metadata.owner == '', this.metadata.manager == '') {
+        // norify user to fill all fields.
+        this.$swal('All fields are required!');
+      } else {
+
+        try {
+          await axios.post(`${process.env.VUE_APP_API_URL}/metadata`, this.metadata);
+          this.name = "";
+          this.owner = "";
+          this.manager = "";
+          this.$router.push("/");
+        } catch (err) {
+          this.$swal('Operation failed, please try again!');
+          console.log(err);
+
+        }
       }
     },
   },
